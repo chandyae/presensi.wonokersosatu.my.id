@@ -131,6 +131,7 @@ class PresensiController extends Controller
     {
 
         $nik = Auth::guard('karyawan')->user()->nik;
+        $status_location = Auth::guard('karyawan')->user()->status_location;
         $hariini = date("Y-m-d");
         $jamsekarang = date("H:i");
         $tgl_sebelumnya = date('Y-m-d', strtotime("-1 days", strtotime($hariini)));
@@ -209,7 +210,7 @@ class PresensiController extends Controller
         $jamkerja_pulang = $tgl_pulang . " " . $jamkerja->jam_pulang;
         $datakaryawan = DB::table('karyawan')->where('nik', $nik)->first();
         $no_hp = $datakaryawan->no_hp;
-        if ($radius > $lok_kantor->radius_cabang) {
+        if ($status_location == 1 && $radius > $lok_kantor->radius_cabang) {
             echo "error|Maaf Anda Berada Diluar Radius, Jarak Anda " . $radius . " meter dari Kantor|radius";
         } else {
             if ($cek > 0) {
